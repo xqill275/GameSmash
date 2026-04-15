@@ -1,13 +1,39 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.18)
 
 project(
     GameSmash
-    VERSION 150426
-    DESCRIPTION "A custom game engine"
+    VERSION "0.1.0"
+    DESCRIPTION "Custom game engine"
     LANGUAGES CXX
 )
 
+include(FetchContent)
+include(GenerateExportHeader)
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+set(OGRE_BUILD_TESTS FALSE CACHE BOOL "" FORCE)
+set(OGRE_BUILD_TOOLS FALSE CACHE BOOL "" FORCE)
+set(OGRE_BUILD_SAMPLES FALSE CACHE BOOL "" FORCE)
+set(OGRE_BUILD_RENDERSYSTEM_D3D9 FALSE CACHE BOOL "" FORCE)
+set(OGRE_BUILD_COMPONENT_PYTHON FALSE CACHE BOOL "" FORCE)
+set(OGRE_BUILD_COMPONENT_JAVA FALSE CACHE BOOL "" FORCE)
+set(OGRE_BUILD_COMPONENT_CSHARP FALSE CACHE BOOL "" FORCE)
+set(OGRE_BUILD_PLUGIN_EXRCODEC FALSE CACHE BOOL "" FORCE)
+
+if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
+    set(OGRE_BUILD_LIBS_AS_FRAMEWORKS FALSE CACHE BOOL "" FORCE)
+    set(OGRE_BUILD_RENDERSYSTEM_GL3PLUS FALSE CACHE BOOL "" FORCE)
+    set(OGRE_BUILD_RENDERSYSTEM_METAL TRUE CACHE BOOL "" FORCE)
+endif()
+
+FetchContent_Declare(
+    ogre
+    GIT_REPOSITORY https://github.com/OGRECave/ogre
+    GIT_TAG v13.6.4
+)
+
+FetchContent_MakeAvailable(ogre)
 
 add_subdirectory(src)
 add_subdirectory(samples)
